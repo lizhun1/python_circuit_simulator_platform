@@ -10,3 +10,5 @@
  * @LastEditors: lizhun
  * @LastEditTime: 2022-09-16 20:35:47
 -->
+
+我想实现一个能够使用python描述电路模块，并且进行仿真的平台
