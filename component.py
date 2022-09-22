@@ -8,7 +8,7 @@ version: 1.0
 Author: lizhun
 Date: 2022-09-13 19:16:33
 LastEditors: lizhun
-LastEditTime: 2022-09-16 20:30:24
+LastEditTime: 2022-09-20 23:05:29
 '''
 
 from abc import abstractmethod
@@ -39,15 +39,25 @@ class port:
         return self.new_signal
     def refresh(self):
         self.new_signal=self.old_signal
+#看仿真结果
+class profiler:
+    def __init__(self) -> None:
+        self.log_path='./log.txt'
+        pass
+        
+    def pro(port_list):
+        pass
 
 #自定义的模块应该继承此类
 class component:
-    def __init__(self,name) -> None:
+    def __init__(self,name,**kwargs) -> None:
         self.ins_name=name
         self.in_ports={}
         self.out_ports={}
         self.com_name='com'
         self.has_seq_logic=False
+        if 'profiler' in kwargs:
+            self.profiler=kwargs['profiler']
         #self.time_cnt=0
         pass
     def assign_clk(self,clk):
@@ -60,6 +70,17 @@ class component:
     def assign_out_ports(self,port):
         self.out_ports[port.name]=port
         pass
+    def get_ports(self,port_name):
+        if port_name in self.in_ports:
+            return self.in_ports[port_name]
+        else:
+            return self.out_ports[port_name]
+    def __add__(self,in_ports):
+        for i in in_ports:
+            self.assign_in_ports(i)
+    def __sub__(self,out_ports):
+        for i in out_ports:
+            self.assign_out_ports(i)
     def get_signals(self):
         signals={}
         if bool(self.in_ports):#先判断输入端口有没有
